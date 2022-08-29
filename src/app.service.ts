@@ -6,6 +6,6 @@ export class AppService {
   constructor(private readonly configService: ConfigService) {}
 
   getHello() {
-    return "Hello world";
+    return "Hello world!";
   }
 }
