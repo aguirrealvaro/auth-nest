@@ -8,6 +8,7 @@ import { JwtService } from "@nestjs/jwt";
 import { User as UserModel } from "@prisma/client";
 import { genSalt, compare, hash } from "bcryptjs";
 import { Response } from "express";
+import { JWTPayload } from "./auth.types";
 import { PrismaService } from "@/database/prisma.service";
 import { LoginUserDto, RegisterUserDto } from "@/users/users.dto";
 @Injectable()
@@ -48,7 +49,7 @@ export class AuthService {
       throw new UnauthorizedException("Password invalid");
     }
 
-    const payload = {
+    const payload: JWTPayload = {
       id: user.id,
     };
 
