@@ -4,14 +4,15 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import { User as UserModel } from "@prisma/client";
 import { genSalt, compare, hash } from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { Response } from "express";
 import { PrismaService } from "@/database/prisma.service";
 import { LoginUserDto, RegisterUserDto } from "@/users/users.dto";
 @Injectable()
 export class AuthService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private prismaService: PrismaService, private jwtService: JwtService) {}
 
   async register(body: RegisterUserDto): Promise<UserModel> {
     const { email, password } = body;
@@ -51,8 +52,8 @@ export class AuthService {
       id: user.id,
     };
 
-    const token = await jwt.sign(payload, "process.env.SECRET_TOKEN");
-    res.headers.set("auth-token", token);
+    const token = this.jwtService.sign(payload);
+    res.set("auth-token", token);
 
     return {
       success: true,
