@@ -1,20 +1,16 @@
 import { ConflictException, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
+import { User as UserModel } from "@prisma/client";
 import { genSalt, hash } from "bcryptjs";
-import { Repository } from "typeorm";
+import { PrismaService } from "@/database/prisma.service";
 import { RegisterUserDto } from "@/users/users.dto";
-import { UsersEntity } from "@/users/users.entity";
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @InjectRepository(UsersEntity)
-    private usersRepository: Repository<UsersEntity>
-  ) {}
+  constructor(private prismaService: PrismaService) {}
 
-  async registerUser(body: RegisterUserDto): Promise<UsersEntity> {
+  async registerUser(body: RegisterUserDto): Promise<UserModel> {
     const { email, password } = body;
-    const user = await this.usersRepository.findOneBy({ email });
+    const user = await this.prismaService.user.findUnique({ where: { email } });
 
     if (user) {
       throw new ConflictException("Email alredy exists");
@@ -23,7 +19,10 @@ export class AuthService {
     const salt = await genSalt(10);
     const hashedPassword = await hash(password, salt);
 
-    const newUser = this.usersRepository.save({ email, password: hashedPassword });
+    const newUser = this.prismaService.user.create({
+      data: { email, password: hashedPassword },
+    });
+
     return newUser;
   }
 }
