@@ -13,10 +13,7 @@ export class AuthController {
   }
 
   @Post("login")
-  async login(
-    @Response({ passthrough: true }) res: Response,
-    @Body() body: LoginUserDto
-  ): Promise<User> {
+  async login(@Response({ passthrough: true }) res: Response, @Body() body: LoginUserDto) {
     return this.authService.login(res, body);
   }
 }
