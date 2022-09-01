@@ -1,6 +1,5 @@
-import { Body, Controller, Post, Res } from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 import { User } from "@prisma/client";
-import { Response } from "express";
 import { AuthService } from "./auth.service";
 import { LoginUserDto, RegisterUserDto } from "@/users/users.dto";
 
@@ -14,7 +13,7 @@ export class AuthController {
   }
 
   @Post("login")
-  async login(@Res({ passthrough: true }) res: Response, @Body() body: LoginUserDto) {
-    return this.authService.login(res, body);
+  async login(@Body() body: LoginUserDto) {
+    return this.authService.login(body);
   }
 }

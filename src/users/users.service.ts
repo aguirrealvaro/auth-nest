@@ -6,7 +6,7 @@ import { PrismaService } from "@/database/prisma.service";
 export class UsersService {
   constructor(private prismaService: PrismaService) {}
 
-  async findAll(): Promise<UsersModel[]> {
+  async getAll(): Promise<UsersModel[]> {
     const users = await this.prismaService.user.findMany();
     return users;
   }
@@ -20,5 +20,9 @@ export class UsersService {
 
     const deletedUser = await this.prismaService.user.delete({ where: { id: user.id } });
     return deletedUser;
+  }
+
+  async getCurrent() {
+    return "asd";
   }
 }

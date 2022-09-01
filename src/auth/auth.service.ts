@@ -7,7 +7,6 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { User as UserModel } from "@prisma/client";
 import { genSalt, compare, hash } from "bcryptjs";
-import { Response } from "express";
 import { JWTPayload } from "./auth.types";
 import { PrismaService } from "@/database/prisma.service";
 import { LoginUserDto, RegisterUserDto } from "@/users/users.dto";
@@ -34,7 +33,7 @@ export class AuthService {
     return newUser;
   }
 
-  async login(res: Response, body: LoginUserDto) {
+  async login(body: LoginUserDto) {
     const { email, password } = body;
 
     const user = await this.prismaService.user.findUnique({ where: { email } });
