@@ -1,8 +1,7 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, Req, UseGuards } from "@nestjs/common";
+import { Controller, Delete, Get, Param, ParseIntPipe, UseGuards } from "@nestjs/common";
 import { User as UsersModel } from "@prisma/client";
-import { Request } from "express";
 import { UsersService } from "./users.service";
-import { JwtAuthGuard } from "@/auth/jwt.guard";
+import { JTWAuthGuard } from "@/auth/jwt.guard";
 
 @Controller("users")
 export class UsersController {
@@ -19,11 +18,10 @@ export class UsersController {
   }
 
   @Get("current")
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JTWAuthGuard)
   // ideally, i set the guard globally, having a @Public decorator
   // https://docs.nestjs.com/security/authentication#enable-authentication-globally
-  async getCurrent(@Req() req: Request) {
-    console.log(req.user);
+  async getCurrent() {
     return this.usersService.getCurrent();
   }
 }

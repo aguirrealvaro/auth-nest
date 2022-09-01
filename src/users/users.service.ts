@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
+import { REQUEST } from "@nestjs/core";
 import { User as UsersModel } from "@prisma/client";
+import { PayloadRequest } from "@/auth/auth.types";
 import { PrismaService } from "@/database/prisma.service";
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class UsersService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    @Inject(REQUEST) private readonly request: PayloadRequest
+  ) {}
 
   async getAll(): Promise<UsersModel[]> {
     const users = await this.prismaService.user.findMany();
@@ -23,6 +28,10 @@ export class UsersService {
   }
 
   async getCurrent() {
-    return "asd";
+    const currentUser = await this.prismaService.user.findUnique({
+      where: { id: this.request.user.id },
+    });
+
+    return currentUser;
   }
 }
