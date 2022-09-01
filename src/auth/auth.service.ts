@@ -54,7 +54,7 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(payload);
-    res.set("auth-token", token);
+    // jwtService sets the token to the Authorization header automatically
 
     return {
       success: true,
