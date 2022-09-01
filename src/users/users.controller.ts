@@ -20,6 +20,8 @@ export class UsersController {
 
   @Get("current")
   @UseGuards(JwtAuthGuard)
+  // ideally, i set the guard globally, having a @Public decorator
+  // https://docs.nestjs.com/security/authentication#enable-authentication-globally
   async getCurrent(@Req() req: Request) {
     console.log(req.user);
     return this.usersService.getCurrent();
