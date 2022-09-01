@@ -28,10 +28,6 @@ export class UsersService {
   }
 
   async getCurrent() {
-    const currentUser = await this.prismaService.user.findUnique({
-      where: { id: this.request.user.id },
-    });
-
-    return currentUser;
+    return this.request.user;
   }
 }
