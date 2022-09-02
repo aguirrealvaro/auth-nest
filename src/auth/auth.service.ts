@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -15,12 +16,16 @@ export class AuthService {
   constructor(private prismaService: PrismaService, private jwtService: JwtService) {}
 
   async register(body: RegisterUserDto): Promise<UserModel> {
-    const { email, password } = body;
+    const { email, password, confirmPassword } = body;
 
     const user = await this.prismaService.user.findUnique({ where: { email } });
 
     if (user) {
       throw new ConflictException("Email alredy exists");
+    }
+
+    if (password !== confirmPassword) {
+      throw new BadRequestException("Password not matching");
     }
 
     const salt = await genSalt(10);
