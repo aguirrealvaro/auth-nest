@@ -1,6 +1,8 @@
 import { Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
 import { User as UsersModel } from "@prisma/client";
+import { EmailAvailabilityDto } from "./users.dto";
+import { EmailAvailabilityReturn } from "./users.types";
 import { PayloadRequest } from "@/auth/auth.types";
 import { PrismaService } from "@/database/prisma.service";
 
@@ -29,5 +31,15 @@ export class UsersService {
 
   async getCurrent() {
     return this.request.user;
+  }
+
+  async getEmailAvailability(body: EmailAvailabilityDto): Promise<EmailAvailabilityReturn> {
+    const { email } = body;
+
+    const user = await this.prismaService.user.findUnique({ where: { email } });
+
+    return {
+      available: !user,
+    };
   }
 }

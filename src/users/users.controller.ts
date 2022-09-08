@@ -1,6 +1,8 @@
-import { Controller, Delete, Get, Param, ParseIntPipe, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, UseGuards } from "@nestjs/common";
 import { User as UsersModel } from "@prisma/client";
+import { EmailAvailabilityDto } from "./users.dto";
 import { UsersService } from "./users.service";
+import { EmailAvailabilityReturn } from "./users.types";
 import { JTWAuthGuard } from "@/auth/jwt.guard";
 
 @Controller("users")
@@ -23,5 +25,12 @@ export class UsersController {
   // https://docs.nestjs.com/security/authentication#enable-authentication-globally
   async getCurrent() {
     return this.usersService.getCurrent();
+  }
+
+  @Get("email_availability")
+  async getEmailAvailability(
+    @Body() body: EmailAvailabilityDto
+  ): Promise<EmailAvailabilityReturn> {
+    return this.usersService.getEmailAvailability(body);
   }
 }
