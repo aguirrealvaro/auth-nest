@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, UseGuards } from "@nestjs/common";
+import { Controller, Delete, Get, Param, ParseIntPipe, UseGuards } from "@nestjs/common";
 import { User as UsersModel } from "@prisma/client";
-import { EmailAvailabilityDto } from "./users.dto";
 import { UsersService } from "./users.service";
 import { EmailAvailabilityReturn } from "./users.types";
 import { JTWAuthGuard } from "@/auth/jwt.guard";
+import { EmailPipe } from "@/pipes/email.pipe";
 
 @Controller("users")
 export class UsersController {
@@ -27,10 +27,10 @@ export class UsersController {
     return this.usersService.getCurrent();
   }
 
-  @Get("email_availability")
+  @Get("email_availability/:email")
   async getEmailAvailability(
-    @Body() body: EmailAvailabilityDto
+    @Param("email", EmailPipe) email: string
   ): Promise<EmailAvailabilityReturn> {
-    return this.usersService.getEmailAvailability(body);
+    return this.usersService.getEmailAvailability(email);
   }
 }

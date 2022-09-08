@@ -23,9 +23,3 @@ export class LoginUserDto {
   @IsNotEmpty()
   password: string;
 }
-
-export class EmailAvailabilityDto {
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-}
