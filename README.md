@@ -8,6 +8,17 @@ Template of a nest production-ready application with Prettier, ESlint, and Pre-c
 $ npm install
 ```
 
+```bash
+# Install dependencies
+$ npm install
+
+# Generate primsa database
+$ npx prisma generate
+
+# Push databases tables
+$ npx prisma db push
+```
+
 ## Running the app
 
 ```bash
@@ -15,8 +26,8 @@ $ npm install
 $ npm run start
 
 # watch mode
-$ npm run start:dev
+$ npm run start-dev
 
 # production mode
-$ npm run start:prod
+$ npm run start-prod
 ```
