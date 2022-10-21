@@ -2,7 +2,7 @@ import { Controller, Delete, Get, Param, ParseIntPipe, UseGuards } from "@nestjs
 import { User as UsersModel } from "@prisma/client";
 import { UsersService } from "./users.service";
 import { EmailAvailabilityReturn } from "./users.types";
-import { JTWAuthGuard } from "@/auth/jwt.guard";
+import { JWTAuthGuard } from "@/auth/jwt.guard";
 import { EmailPipe } from "@/pipes/email.pipe";
 
 @Controller("users")
@@ -20,7 +20,7 @@ export class UsersController {
   }
 
   @Get("current")
-  @UseGuards(JTWAuthGuard)
+  @UseGuards(JWTAuthGuard)
   // ideally, i set the guard globally, having a @Public decorator
   // https://docs.nestjs.com/security/authentication#enable-authentication-globally
   async getCurrent() {
