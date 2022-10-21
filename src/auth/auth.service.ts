@@ -8,9 +8,9 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { User as UserModel } from "@prisma/client";
 import { genSalt, compare, hash } from "bcryptjs";
+import { LoginUserDto, RegisterUserDto } from "./auth.dto";
 import { JWTPayload } from "./auth.types";
 import { PrismaService } from "@/database/prisma.service";
-import { LoginUserDto, RegisterUserDto } from "@/users/users.dto";
 @Injectable()
 export class AuthService {
   constructor(private prismaService: PrismaService, private jwtService: JwtService) {}
