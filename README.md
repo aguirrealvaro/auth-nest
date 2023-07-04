@@ -1,6 +1,6 @@
-## Nest Template
+## auth-nest
 
-Template of a nest production-ready application with Prettier, ESlint, and Pre-commit
+Backend api with auth made with Nest, Prisma and Postgres
 
 ## Installation
 
